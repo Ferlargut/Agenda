@@ -1,57 +1,25 @@
-
-      $(document).ready(function(){
-                    $("#agregar").click(agregarContactos);
-                   
-      });
-
-     
- var agregarContactos = function (e) {
-            e.preventDefault();
-       
-            //obtener los datos
-        var $dondeAgregar =$("#imprimirContacto");
-        var $nombre = $("#nombre").val();
-        var $telefono = $("#telefono").val();
-        var $correo = $("#mail").val();
-        
-       // crear elementos
-        var $tarjeta = $("<div />");
-        var $tituloNombre =$("<h6 />");
-        var $pNumero = $("<p />");
-        var $pCorreo = $("<p />");
-        var $boton = $("<button />")
-
-        //Perzonalidad
-        $tarjeta.addClass("cont");
-        $boton.click(borrarContacto);
-        
-
-        //Introducir elementos en el DOM
-        $tarjeta.append($tituloNombre);
-        $tarjeta.append($pNumero);
-        $tarjeta.append($pCorreo);
-        $tarjeta.append($boton)
-        $dondeAgregar.append($tarjeta);
-        
-        
-        var $contador = $(".cont").length;
-        var $contar = $("#contador")
-        console.log($contador);
-        
-
-            //Agregar contenido 
-        $tituloNombre.text($nombre);
-        $pNumero.text("Telefono : "+$telefono);
-        $pCorreo.text("Correo : "+$correo);        
-        $contar.text($contador);
-        $boton.text("X");
-
-    };     
-    var borrarContacto = function () {        
-        console.log(this);
-        $(this).parent().remove();
-                        
-    };
-         
+var url ="data/contactos.json"
+var cargarPagina = function () {
+    contactosAgenda();
+};
+var $areaContacto = $("#areaContacto");
+var contactosAgenda = function (){
+    $.getJSON(url,function (contactos) {
+        contactos.forEach(mostrarContacto);  
+    });
+};
+var plantillaContactos = 
+"<li class='collection-item'><div>__nombre__<p>__numero__</p></div>"+
+"</li>";
+var mostrarContacto = function (contacto) {
+    var $nombre = contacto.nombre;
+    var $numero = contacto.correo;
+    var $mostrar = "";
+    $mostrar = plantillaContactos.replace("__nombre__",$nombre).replace("__numero__",$numero);
+    $areaContacto.append($mostrar);
+    console.log($mostrar);
+    
+}
+$(document).ready(cargarPagina);
       
 
